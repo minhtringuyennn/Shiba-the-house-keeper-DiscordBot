@@ -8,7 +8,7 @@ import discord
 from discord.ext import commands
 
 read_config = configparser.ConfigParser()
-read_config.read("./config/default_config.ini")
+read_config.read("./config/config.ini")
 TOKEN = read_config.get("config", "Token")
 PREFIX = read_config.get("config", "CommandPrefix")
 
