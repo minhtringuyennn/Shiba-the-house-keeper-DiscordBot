@@ -179,6 +179,22 @@ async def remainTurn(ctx, mininput = "1", maxinput = "10" ):
     #Return result
     await  ctx.send(f"Hãy chơi thêm {turn} lượt nữa!")
 
+#Fifth def
+@client.command()
+async def choose(ctx, *, input = ""):
+    if input == "":
+        await ctx.send(f"Nhập đàng hoàng coi <:meow_glance:758735706360774666>")
+        return
+
+    author = ctx.message.author
+    list = input.split(", ")
+    if len(list) == 1:
+        await ctx.send(f"Có đáp án rõ ràng thế lại còn gì hả {author.mention} <:meow_glance:758735706360774666>")
+        return
+
+    value = random.choice(list)
+    await ctx.send(f"Tôi chọn {value} nhé {author.mention} <:meow_huh:759037054725128242>")
+
 #Help def
 @client.command(pass_context=True)
 async def help(ctx):
@@ -188,11 +204,13 @@ async def help(ctx):
         coulour = discord.Color.red()
     )
     embed.set_author(name='Thông tin nhanh:')
-    embed.add_field(name='Về bot', value='Tác giả: Bạch Ngọc Minh Tâm và Nguyễn Minh Trí \n Một bot đơn giản để phục vụ trò chơi Truth or Dare cho nhóm bạn của tác giả.', inline=True)
+    embed.add_field(name='Về bot', value='Tác giả: Bạch Ngọc Minh Tâm và Nguyễn Minh Trí \n Một bot đơn giản để phục vụ server cho nhóm bạn của tác giả.', inline=True)
     embed.add_field(name='>roll', value='Có 2 kiểu: " >roll " với mặc định là 5s và " >roll {số giây còn lại} " \n Thời gian roll tối thiểu là 5s và thời gian tối đa là 90s.', inline=False)
     embed.add_field(name='>rollroom', value='Có 2 kiểu: " >rollroom " với mặc định là 5s và " >rollroom {số giây còn lại} " \n Thời gian roll tối thiểu là 5s và thời gian tối đa là 90s.', inline=False)
     embed.add_field(name='>listroom', value='Trả về thông tin channel hiện tại mà người chơi đang tham gia.', inline=False)
     embed.add_field(name='>remainTurn', value='Có 2 kiểu: " >remainTurn " và " >remainTurn {số lượt ít nhất} {số lượt nhiều nhất} " \n "Trả về số lượt chơi còn lại của trò chơi \n Giá trị trả về ít nhất 1 lượt chơi và tối đa 20 lượt chơi.', inline=False)
+    embed.add_field(name='>choose', value='Chỉ cần gõ " >choose {danh sách lựa chọn ngăn cách bởi dấu phẩy}"" \n Trả về sự lựa chọn ngẫu nhiên \n Có thể trả về dù chỉ với 1 hay rất nhiều lựa chọn', inline=False)
+
     # await author.send(embed=embed)
     await ctx.send(embed=embed)
 
