@@ -1,18 +1,20 @@
+#!/usr/bin/python3
 import asyncio
 import datetime
 import random
+import configparser
 from random import randint
 import discord
 from discord.ext import commands
 
-#Edit token here
-TOKEN = ""
+read_config = configparser.ConfigParser()
+read_config.read("./config/config.ini")
+TOKEN = read_config.get("config", "Token")
+PREFIX = read_config.get("config", "CommandPrefix")
 
-#Edit prefix here
-PREFIX = ">"
+
 intents = discord.Intents().all()
-client = commands.Bot(command_prefix=PREFIX, intents=intents)
-client.remove_command('help')
+client = commands.Bot(command_prefix=PREFIX, intents=intents, help_command=None)
 
 #Check if bot deploy successfully
 @client.event
@@ -163,7 +165,7 @@ async def listroom(ctx):
 
 #Fourth def
 @client.command()
-async def remainTurn(ctx, *, mininput = "3", maxinput = "10"):
+async def remainTurn(ctx, mininput = "1", maxinput = "10"):
     #Init
     if mininput.isnumeric() == 0 or maxinput.isnumeric() == 0 or int(mininput) > int(maxinput) or int(maxinput) > 21 or int(mininput) < 1:
         await ctx.send(f"Chỉ nhập giá trị từ 1 đến 20 <:frog_noo:759037055036031007>")
@@ -185,14 +187,13 @@ async def help(ctx):
     embed = discord.Embed(
         coulour = discord.Color.red()
     )
-
     embed.set_author(name='Thông tin nhanh:')
     embed.add_field(name='Về bot', value='Tác giả: Bạch Ngọc Minh Tâm và Nguyễn Minh Trí \n Một bot đơn giản để phục vụ trò chơi Truth or Dare cho nhóm bạn của tác giả.', inline=True)
     embed.add_field(name='>roll', value='Có 2 kiểu: " >roll " với mặc định là 5s và " >roll {số giây còn lại} " \n Thời gian roll tối thiểu là 5s và thời gian tối đa là 90s.', inline=False)
     embed.add_field(name='>rollroom', value='Có 2 kiểu: " >rollroom " với mặc định là 5s và " >rollroom {số giây còn lại} " \n Thời gian roll tối thiểu là 5s và thời gian tối đa là 90s.', inline=False)
     embed.add_field(name='>listroom', value='Trả về thông tin channel hiện tại mà người chơi đang tham gia.', inline=False)
     embed.add_field(name='>remainTurn', value='Có 2 kiểu: " >remainTurn " và " >remainTurn {số lượt ít nhất} {số lượt nhiều nhất} " \n "Trả về số lượt chơi còn lại của trò chơi \n Giá trị trả về ít nhất 1 lượt chơi và tối đa 20 lượt chơi.', inline=False)
-
-    await author.send(embed=embed)
+    # await author.send(embed=embed)
+    await ctx.send(embed=embed)
 
 client.run(TOKEN)
