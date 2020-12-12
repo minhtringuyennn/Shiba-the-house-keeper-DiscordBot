@@ -6,6 +6,7 @@ import configparser
 from random import randint
 import discord
 from discord.ext import commands
+#import youtube-dl
 
 read_config = configparser.ConfigParser()
 read_config.read("./config/config.ini")
@@ -186,22 +187,58 @@ async def choose(ctx, *, input = ""):
         await ctx.send(f"Nhập đàng hoàng coi <:meow_glance:758735706360774666>")
         return
 
+    sz = len(input)
     author = ctx.message.author
     list = input.split(", ")
+    value = random.choice(list)
+
+    if len(list) == 1 and sz > 1 or "" in list:
+        await ctx.send(f"Tính exploit gì đây <:meow_glance:758735706360774666>")
+        return
+
     if len(list) == 1:
         await ctx.send(f"Có đáp án rõ ràng thế lại còn gì hả {author.mention} <:meow_glance:758735706360774666>")
         return
 
-    value = random.choice(list)
     await ctx.send(f"Tôi chọn {value} nhé {author.mention} <:meow_huh:759037054725128242>")
+
+#Youtube streaming
+players = {}
+
+@client.command(pass_context=True)
+async def p(ctx, url):
+    #Init
+    if ctx.author.voice and ctx.author.voice.channel:
+        channel = ctx.author.voice.channel
+    else:
+        await ctx.send("Bạn chưa kết nối đến channel!")
+        return
+
+    print(1)
+    await channel.connect()
+    print(url)
+
+    #Return music
+    guild = ctx.message.guild
+    voice_client = guild.voice_client
+    player = await voice_client.create_ytdl_player(url)
+    players[server.id] = player
+    player.start()
+
+@client.command(pass_context=True)
+async def leave(ctx):
+    guild = ctx.message.guild
+    voice_client = guild.voice_client
+    await voice_client.disconnect()
+
+#Gif search
 
 #Help def
 @client.command(pass_context=True)
 async def help(ctx):
-    author = ctx.message.author
-
+    #author = ctx.message.author
     embed = discord.Embed(
-        coulour = discord.Color.red()
+        coulour=discord.Color.red()
     )
     embed.set_author(name='Thông tin nhanh:')
     embed.add_field(name='Về bot', value='Tác giả: Bạch Ngọc Minh Tâm và Nguyễn Minh Trí \n Một bot đơn giản để phục vụ server cho nhóm bạn của tác giả.', inline=True)
@@ -210,10 +247,11 @@ async def help(ctx):
     embed.add_field(name='>listroom', value='Trả về thông tin channel hiện tại mà người chơi đang tham gia.', inline=False)
     embed.add_field(name='>remainTurn', value='Có 2 kiểu: " >remainTurn " và " >remainTurn {số lượt ít nhất} {số lượt nhiều nhất} " \n "Trả về số lượt chơi còn lại của trò chơi \n Giá trị trả về ít nhất 1 lượt chơi và tối đa 20 lượt chơi.', inline=False)
     embed.add_field(name='>choose', value='Chỉ cần gõ " >choose {danh sách lựa chọn ngăn cách bởi dấu phẩy}"" \n Trả về sự lựa chọn ngẫu nhiên \n Có thể trả về dù chỉ với 1 hay rất nhiều lựa chọn', inline=False)
-
-    # await author.send(embed=embed)
+    embed.add_field(name='>p', value='Chỉ cần gõ " >p {đường link Youtube}"" \n Join channel và phát nhạc cho mọi người \n Khi không cần thiết có thể gõ >leave', inline=False)
+    #await author.send(embed=embed)
     await ctx.send(embed=embed)
 
+#Get out of reach
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingPermissions):
