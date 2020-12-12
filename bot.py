@@ -8,7 +8,7 @@ import discord
 from discord.ext import commands
 
 read_config = configparser.ConfigParser()
-read_config.read("./config/config.ini")
+read_config.read("./config/default_config.ini")
 TOKEN = read_config.get("config", "Token")
 PREFIX = read_config.get("config", "CommandPrefix")
 
@@ -165,7 +165,7 @@ async def listroom(ctx):
 
 #Fourth def
 @client.command()
-async def remainTurn(ctx, mininput = "1", maxinput = "10"):
+async def remainTurn(ctx, mininput = "1", maxinput = "10" ):
     #Init
     if mininput.isnumeric() == 0 or maxinput.isnumeric() == 0 or int(mininput) > int(maxinput) or int(maxinput) > 21 or int(mininput) < 1:
         await ctx.send(f"Chỉ nhập giá trị từ 1 đến 20 <:frog_noo:759037055036031007>")
@@ -195,5 +195,16 @@ async def help(ctx):
     embed.add_field(name='>remainTurn', value='Có 2 kiểu: " >remainTurn " và " >remainTurn {số lượt ít nhất} {số lượt nhiều nhất} " \n "Trả về số lượt chơi còn lại của trò chơi \n Giá trị trả về ít nhất 1 lượt chơi và tối đa 20 lượt chơi.', inline=False)
     # await author.send(embed=embed)
     await ctx.send(embed=embed)
+
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("Tưởng rằng lệnh sẽ được thực thi sao??? Không! Đây là Dio <:jco:781338022078840832>")
+        return
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send(f"Nhập sai lệnh rồi bạn ơi, thất bại quá đi <:pepe_suicide:758735705882361887>")
+        await ctx.send(f"Các lệnh bot hỗ trợ:")
+        await help(ctx)
+        return
 
 client.run(TOKEN)
