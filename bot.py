@@ -231,7 +231,6 @@ async def choose(ctx, *, input=""):
 #     player.start()
 
 # Mocking Text Generator
-
 @client.command()
 async def mock(ctx, *, input= ""): 
     output = ""
@@ -264,6 +263,7 @@ async def mock(ctx, *, input= ""):
     embed.set_image(url='https://cdn.discordapp.com/attachments/775431017053945868/787667035580530728/minhtringu-ran-this-command.gif')
     await ctx.send(embed=embed)
 
+#Shouting to someone
 @client.command()
 async def shout(ctx, *, input= ""): 
     output = ""
@@ -294,6 +294,46 @@ async def shout(ctx, *, input= ""):
     embed = discord.Embed()
     embed.set_image(url='https://media1.tenor.com/images/9b29ee560a03a7441490e95778922aaa/tenor.gif')
     await ctx.send(embed=embed)
+
+#OwO what's this
+@client.command()
+async def owo(ctx):
+    await ctx.send("OwO")
+
+@client.command()
+async def OwO(ctx):
+    await ctx.send("OwO")
+
+#etou...
+@client.command()
+async def etou(ctx, *, input = ""):
+    if input == "":
+        await ctx.send("etou... 👉👈")
+    else:
+        await ctx.send(f"{input}... 👉👈")
+
+#how long is your dick?
+@client.command()
+async def penis(ctx, *, name=""):
+    l = 0
+    penis = "8D"
+    s = randint(0, 15)
+    print("call successfully")
+    while l<s:
+        penis = penis[:1] + '=' + penis[1:]
+        l+=1
+
+    if name=="":
+        name = "your"
+    
+    if len(penis)<5:
+        await ctx.send(f"get rekt kid, {name} dick is just this {penis} long <:meow_lovelybutt:759037054507810838>")
+    elif len(penis)>12:
+        name = name[0].upper() + name[1:]
+        await ctx.send(f"WOW! {name} is this {penis} long! <:pepe_jesuschrist:758735706267844650>")
+    else:
+        name = name[0].upper() + name[1:]
+        await ctx.send(f"{name} dick is this {penis} long")
 
 # Help def
 @client.command(pass_context=True)
