@@ -318,14 +318,13 @@ async def penis(ctx, *, name=""):
     l = 0
     penis = "8D"
     s = randint(0, 15)
-    print("call successfully")
+    
     while l<s:
         penis = penis[:1] + '=' + penis[1:]
         l+=1
 
-    if name=="":
+    if len(name) == 0:
         name = "your"
-    
     if len(penis)<5:
         await ctx.send(f"get rekt kid, {name} dick is just this {penis} long <:meow_lovelybutt:759037054507810838>")
     elif len(penis)>12:
@@ -334,6 +333,26 @@ async def penis(ctx, *, name=""):
     else:
         name = name[0].upper() + name[1:]
         await ctx.send(f"{name} dick is this {penis} long")
+
+#simp rate?
+@client.command()
+async def simprate(ctx, *, name=""):
+    rate = randint(0, 100)
+    tobe = "is"
+    
+    if len(name) == 0:
+        name = "you"
+        tobe = "are"
+
+    if rate<15:
+        await ctx.send(f"Ah I see, just {rate}%. {name} {tobe} the man of culture as well. <:hutthuoc:779543902617206804>")
+    elif rate>80:
+        name = name[0].upper() + name[1:]
+
+        await ctx.send(f"WOW! {rate}%! {name} {tobe} such a simp! <:pepe_jesuschrist:758735706267844650>")
+    else:
+        name = name[0].upper() + name[1:]
+        await ctx.send(f"{name} {tobe} {rate}% simp")
 
 # Help def
 @client.command(pass_context=True)
@@ -355,7 +374,7 @@ async def help(ctx):
     embed.add_field(name='>listroom', value='Trả về thông tin channel hiện tại mà người chơi đang tham gia.',
                     inline=False)
     embed.add_field(name='>remainTurn',
-                    value='Có 2 kiểu: " >remainTurn " và " >remainTurn {số lượt ít nhất} {số lượt nhiều nhất} " \n "Trả về số lượt chơi còn lại của trò chơi \n Giá trị trả về ít nhất 1 lượt chơi và tối đa 20 lượt chơi.',
+                    value='Có 2 kiểu: " >remainTurn " và " >remainTurn {số lượt ít nhất} {số lượt nhiều nhất} " \n Trả về số lượt chơi còn lại của trò chơi \n Giá trị trả về ít nhất 1 lượt chơi và tối đa 20 lượt chơi.',
                     inline=False)
     embed.add_field(name='>choose',
                     value='Chỉ cần gõ " >choose {danh sách lựa chọn ngăn cách bởi dấu phẩy}"" \n Trả về sự lựa chọn ngẫu nhiên \n Có thể trả về dù chỉ với 1 hay rất nhiều lựa chọn',
@@ -366,8 +385,20 @@ async def help(ctx):
     embed.add_field(name='>mock',
                     value='Có 2 kiểu: " >mock " và " >mock {nội dung} " \n "Trả về Câu CHữ KHIÊu khícH \n Giá trị mặc định là tên người gọi lệnh.',
                     inline=False)
-    embed.add_field(name='>remainTurn',
+    embed.add_field(name='>shout',
                     value='Có 2 kiểu: " >shout " và " >shout {nội dung} " \n "Dùng để chửi thằng lợn nào đó \n Giá trị mặc định là ARGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH.',
+                    inline=False)
+    embed.add_field(name='>owo',
+                    value='owo what is this',
+                    inline=False)
+    embed.add_field(name='>etou',
+                    value='Có 2 kiểu: " >etou " và " >etou {nội dung} " \n :point_right::point_left:',
+                    inline=False)
+    embed.add_field(name='>penis',
+                    value='Có 2 kiểu: " >penis " và " >penis {người được tag} " \n How long is yours? <:cuoi_deu:772700153806716928>',
+                    inline=False)
+    embed.add_field(name='>simprate',
+                    value='Có 2 kiểu: " >simprate " và " >simprate {người được tag} " \n Bạn yêu người yêu bạn thế nào <:meow_woah:759037054968397904>',
                     inline=False)
     # await author.send(embed=embed)
     await ctx.send(embed=embed)
