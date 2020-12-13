@@ -8,6 +8,8 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 import youtube_dl
+import string
+import os
 
 read_config = configparser.ConfigParser()
 read_config.read("./config/config.ini")
@@ -227,6 +229,43 @@ async def choose(ctx, *, input=""):
 #     player = await voice_client.create_ytdl_player(url)
 #     players[server.id] = player
 #     player.start()
+
+# Mocking Text Generator
+
+@client.command()
+async def mock(ctx, *, input= ""): 
+    output = ""
+
+    for char in input: 
+        if char.isalpha(): 
+            if random.random() > 0: 
+                output += char.encode('gbk','ignore').decode('gbk').upper()
+            else: 
+                output += char.encode('gbk','ignore').decode('gbk').lower()
+        else: 
+            output += char 
+
+    if output == "":
+        output = ctx.author.name  
+        temp = ""
+        for char in output: 
+            if char.isalpha(): 
+                if random.random() > 0: 
+                    temp += char.encode('gbk','ignore').decode('gbk').upper()
+                else: 
+                    temp += char.encode('gbk','ignore').decode('gbk').lower()
+            else: 
+                temp += char
+            output = temp
+    
+    print("convert successfully")
+
+    await ctx.send(f"`{output}`")
+
+    #send nud...gif
+    embed = discord.Embed()
+    embed.set_image(url='https://cdn.discordapp.com/attachments/775431017053945868/787667035580530728/minhtringu-ran-this-command.gif')
+    await ctx.send(embed=embed)
 
 # Help def
 @client.command(pass_context=True)
