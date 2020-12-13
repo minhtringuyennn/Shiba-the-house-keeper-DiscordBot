@@ -257,13 +257,41 @@ async def mock(ctx, *, input= ""):
                 temp += char
             output = temp
     
-    print("convert successfully")
-
     await ctx.send(f"`{output}`")
 
     #send nud...gif
     embed = discord.Embed()
     embed.set_image(url='https://cdn.discordapp.com/attachments/775431017053945868/787667035580530728/minhtringu-ran-this-command.gif')
+    await ctx.send(embed=embed)
+
+@client.command()
+async def shout(ctx, *, input= ""): 
+    output = ""
+    
+    for char in input: 
+        if char.isalpha(): 
+            if char.islower(): 
+                output += char.upper()
+            else: 
+                output += char
+        else: 
+            output += char
+
+    if output != "":
+        l = 1
+        while l < 5:
+            output += input[len(input)-1].upper()
+            l += 1
+        while l < 10:
+            output += "!"
+            l+=1
+        await ctx.send(f"`{output}`")
+    else:
+        await ctx.send(f"ARGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+
+    #send nud...gif
+    embed = discord.Embed()
+    embed.set_image(url='https://media1.tenor.com/images/9b29ee560a03a7441490e95778922aaa/tenor.gif')
     await ctx.send(embed=embed)
 
 # Help def
@@ -291,8 +319,14 @@ async def help(ctx):
     embed.add_field(name='>choose',
                     value='Chỉ cần gõ " >choose {danh sách lựa chọn ngăn cách bởi dấu phẩy}"" \n Trả về sự lựa chọn ngẫu nhiên \n Có thể trả về dù chỉ với 1 hay rất nhiều lựa chọn',
                     inline=False)
-    embed.add_field(name='>p',
-                    value='Chỉ cần gõ " >p {đường link Youtube}"" \n Join channel và phát nhạc cho mọi người \n Khi không cần thiết có thể gõ >leave \n Tính năng đang được xây dựng',
+    # embed.add_field(name='>p',
+    #                 value='Chỉ cần gõ " >p {đường link Youtube}"" \n Join channel và phát nhạc cho mọi người \n Khi không cần thiết có thể gõ >leave \n Tính năng đang được xây dựng',
+    #                 inline=False)
+    embed.add_field(name='>mock',
+                    value='Có 2 kiểu: " >mock " và " >mock {nội dung} " \n "Trả về Câu CHữ KHIÊu khícH \n Giá trị mặc định là tên người gọi lệnh.',
+                    inline=False)
+    embed.add_field(name='>remainTurn',
+                    value='Có 2 kiểu: " >shout " và " >shout {nội dung} " \n "Dùng để chửi thằng lợn nào đó \n Giá trị mặc định là ARGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH.',
                     inline=False)
     # await author.send(embed=embed)
     await ctx.send(embed=embed)
