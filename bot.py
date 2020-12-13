@@ -257,7 +257,7 @@ async def mock(ctx, *, input= ""):
                 temp += char
             output = temp
     
-    await ctx.send(f"`{output}`")
+    await ctx.send(f"{output}")
 
     #send nud...gif
     embed = discord.Embed()
@@ -280,12 +280,13 @@ async def shout(ctx, *, input= ""):
     if output != "":
         l = 1
         while l < 5:
-            output += input[len(input)-1].upper()
+            if input[len(input)-1].isalpha():
+                output += input[len(input)-1].upper()
             l += 1
         while l < 10:
             output += "!"
             l+=1
-        await ctx.send(f"`{output}`")
+        await ctx.send(f"{output}")
     else:
         await ctx.send(f"ARGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
 
