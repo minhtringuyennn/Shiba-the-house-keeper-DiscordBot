@@ -181,6 +181,7 @@ async def remainTurn(ctx, mininput="1", maxinput="10"):
     await  ctx.send(f"Hãy chơi thêm {turn} lượt nữa!")
 
 # Fifth def
+
 @client.command()
 async def choose(ctx, *, input=""):
     if input == "":
@@ -200,7 +201,7 @@ async def choose(ctx, *, input=""):
         await ctx.send(f"Có đáp án rõ ràng thế lại còn gì hả {author.mention} <:meow_glance:758735706360774666>")
         return
 
-    await ctx.send(f"Tôi chọn {value} nhé {author.mention} <:meow_huh:759037054725128242>")
+    await ctx.send(f"Tôi chọn `{value}` nhé {author.mention} <:meow_huh:759037054725128242>")
 
 # # Youtube streaming
 # players = {}
