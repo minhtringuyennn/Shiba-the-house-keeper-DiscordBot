@@ -7,7 +7,7 @@ from random import randint
 import discord
 from discord.ext import commands
 from discord.utils import get
-import youtube_dl
+# import youtube_dl
 import string
 import os
 
@@ -235,13 +235,12 @@ async def choose(ctx, *, input=""):
 @client.command()
 async def mock(ctx, *, input= ""): 
     output = ""
-
     for char in input: 
         if char.isalpha(): 
-            if random.random() > 0: 
-                output += char.encode('gbk','ignore').decode('gbk').upper()
+            if random.choice([True, False]): 
+                output += char.upper()
             else: 
-                output += char.encode('gbk','ignore').decode('gbk').lower()
+                output += char.lower()
         else: 
             output += char 
 
@@ -250,10 +249,10 @@ async def mock(ctx, *, input= ""):
         temp = ""
         for char in output: 
             if char.isalpha(): 
-                if random.random() > 0: 
-                    temp += char.encode('gbk','ignore').decode('gbk').upper()
+                if random.choice([True, False]): 
+                    temp += char.upper()
                 else: 
-                    temp += char.encode('gbk','ignore').decode('gbk').lower()
+                    temp += char.lower()
             else: 
                 temp += char
             output = temp
