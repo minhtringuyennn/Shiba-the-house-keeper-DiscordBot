@@ -116,7 +116,7 @@ async def rollroom(ctx, *, input="5"):
     for member in members:
         if not member.bot:
             users.append(member)
-
+        
     # Waiting
     while (seconds > 0):
         if (seconds > 5):
@@ -235,13 +235,18 @@ async def choose(ctx, *, input=""):
 # Add react def
 
 @client.command()
-async def addreact(ctx,*, id = ""):
-    await ctx.message.delete()
+async def createvote(ctx,*, id = ""):
+    
     if (id == ""):
         logs =  await ctx.channel.history(limit=1).flatten()
         msg = logs[0]
     else:
-        msg = await ctx.channel.fetch_message(id)
+        try:
+            msg = await ctx.channel.fetch_message(id)
+        except:
+            await ctx.send(f"Nhập không hợp lệ òi, Đâu thấy tin nhắn nào có ID đó đâu <:wut:781338137985155113><:voli:784077759001526272>")
+            return
+    await ctx.message.delete()
     list = msg.content.split("\n")
     for lt in list:
         lookup = ""
@@ -257,8 +262,10 @@ async def addreact(ctx,*, id = ""):
             for emj in lt.split(' '):
                 if emj in emoji.UNICODE_EMOJI:
                     await msg.add_reaction(emj)
-    await msg.add_reaction("<:amongus_VOTED:764909622754017322>")
-    await msg.remove_reaction("<:amongus_VOTED:764909622754017322>",client.user)
+    try:
+        await msg.remove_reaction("<:amongus_VOTED:764909622754017322>",client.user)
+    except:
+        return
 
 # Mocking Text Generator
 @client.command()
@@ -430,8 +437,8 @@ async def help(ctx):
     embed.add_field(name='>simprate',
                     value='Có 2 kiểu: " >simprate " và " >simprate {người được tag} " \n Bạn yêu người yêu bạn thế nào <:meow_woah:759037054968397904>',
                     inline=False)    
-    embed.add_field(name='>addreact',
-                    value='Có 2 kiểu: " >addreact " sẽ add emoji ở tin nhắn gần đó nhất và " >addreact {message id} "',
+    embed.add_field(name='>createvote',
+                    value='Có 2 kiểu: " >createvote " sẽ add emoji ở tin nhắn gần đó nhất và " >createvote {message id} "',
                     inline=False)
     # await author.send(embed=embed)
     await ctx.send(embed=embed)
@@ -441,6 +448,12 @@ async def help(ctx):
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingPermissions):
         await ctx.send("Tưởng rằng lệnh sẽ được thực thi sao??? Không! Đây là Dio <:jco:781338022078840832>")
+        return    
+    if isinstance(error, commands.BadArgument):
+        await ctx.send(f"Nhập không hợp lệ rồi bạn ơi, thất bại quá đi <:pepe_suicide:758735705882361887>")
+        return    
+    if isinstance(error, commands.MessageNotFound):
+        await ctx.send(f"Nhập không hợp lệ òi, Đâu thấy tin nhắn nào có ID đó đâu <:wut:781338137985155113><:voli:784077759001526272>")
         return
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(f"Nhập sai lệnh rồi bạn ơi, thất bại quá đi <:pepe_suicide:758735705882361887>")
