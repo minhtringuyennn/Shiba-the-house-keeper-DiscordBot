@@ -10,6 +10,8 @@ from discord.utils import get
 # import youtube_dl
 import string
 import os
+import re
+import emoji
 
 read_config = configparser.ConfigParser()
 read_config.read("./config/config.ini")
@@ -229,6 +231,34 @@ async def choose(ctx, *, input=""):
 #     player = await voice_client.create_ytdl_player(url)
 #     players[server.id] = player
 #     player.start()
+
+# Add react def
+
+@client.command()
+async def addreact(ctx,*, id = ""):
+    await ctx.message.delete()
+    if (id == ""):
+        logs =  await ctx.channel.history(limit=1).flatten()
+        msg = logs[0]
+    else:
+        msg = await ctx.channel.fetch_message(id)
+    list = msg.content.split("\n")
+    for lt in list:
+        lookup = ""
+        server_match = re.search(r'<a?:(\w+):(\d+)>', lt)
+        custom_match = re.search(r':(\w+):', lt)
+        if server_match:
+            lookup = server_match.group(1)
+            await msg.add_reaction(get(ctx.message.guild.emojis, name=lookup))
+        elif custom_match:
+            lookup = custom_match.group(1)  
+            await msg.add_reaction(get(ctx.message.guild.emojis, name=lookup))
+        else:
+            for emj in lt.split(' '):
+                if emj in emoji.UNICODE_EMOJI:
+                    await msg.add_reaction(emj)
+    await msg.add_reaction("<:amongus_VOTED:764909622754017322>")
+    await msg.remove_reaction("<:amongus_VOTED:764909622754017322>",client.user)
 
 # Mocking Text Generator
 @client.command()
