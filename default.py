@@ -75,8 +75,8 @@ class DefaultCommands(commands.Cog):
         embed.add_field(name='>simprate',
                         value='Có 2 kiểu: " >simprate " và " >simprate {người được tag} " \n Bạn yêu người yêu bạn thế nào <:meow_woah:759037054968397904>',
                         inline=False)    
-        embed.add_field(name='>addreact',
-                        value='Có 2 kiểu: " >addreact " sẽ add emoji ở tin nhắn gần đó nhất và " >addreact {message id} "',
+        embed.add_field(name='>createvote',
+                        value='Có 2 kiểu: " >createvote " sẽ add emoji ở tin nhắn gần đó nhất và " >createvote {message id} "',
                         inline=False)
         # await author.send(embed=embed)
         await ctx.send(embed=embed)
