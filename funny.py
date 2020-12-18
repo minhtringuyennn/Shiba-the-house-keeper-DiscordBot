@@ -39,7 +39,7 @@ class Funny(commands.Cog):
 
     #Shouting to someone
     @commands.command()
-    async def shout(self,ctx, *, input= ""): 
+    async def shout(self, ctx, *, input= ""): 
         output = ""
     
         for char in input: 
@@ -70,16 +70,16 @@ class Funny(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def owo(ctx):
+    async def owo(self, ctx):
         await ctx.send("OwO")
 
     @commands.command()
-    async def OwO(ctx):
+    async def OwO(self, ctx):
         await ctx.send("OwO")
 
     #etou...
     @commands.command()
-    async def etou(ctx, *, input = ""):
+    async def etou(self, ctx, *, input = ""):
         if input == "":
             await ctx.send("etou... 👉👈")
         else:
@@ -93,12 +93,14 @@ class Funny(commands.Cog):
         s = randint(0, 15)
         if (ctx.message.author.id == 443116194275524619 and name == ""):
             s = 15
+        if (name=="<@!443116194275524619>"):
+            s = 15
         while l<s:
             penis = penis[:1] + '=' + penis[1:]
             l+=1
-
+        
         if len(name) == 0:
-            name = "your"
+            name = f'{ctx.message.author.mention}'
         if len(penis)<5:
             await ctx.send(f"get rekt kid, {name} dick is just this {penis} long <:meow_lovelybutt:759037054507810838>")
         elif len(penis)>12:
@@ -112,7 +114,7 @@ class Funny(commands.Cog):
     @commands.command()
     async def simprate(self,ctx, *, name=""):
         rate = randint(0, 100)
-        if (ctx.message.author.id in [506827356489515020,340643391618547712,624210700528779266]):
+        if (ctx.message.author.id in [506827356489515020,340643391618547712,624210700528779266] and name == ""):
             rate = randint(90, 100)
         tobe = "is"
         if len(name) == 0:
