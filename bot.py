@@ -13,10 +13,12 @@ import funny
 import music_bot
 class MyBot(commands.Bot):
     def read_config(self):
-        read_config = configparser.ConfigParser()
-        read_config.read("./config/config.ini")
-        self.__TOKEN = read_config.get("config", "Token")
-        self.PREFIX = read_config.get("config", "CommandPrefix")
+        # read_config = configparser.ConfigParser()
+        # read_config.read("./config/config.ini")
+        # self.__TOKEN = read_config.get("config", "Token")
+        self.__TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+        self.PREFIX = os.getenv("COMMAND_PREFIX")
+        # self.PREFIX = read_config.get("config", "CommandPrefix")
     def __init__(self):
         intents = discord.Intents().all()
         self.read_config()
