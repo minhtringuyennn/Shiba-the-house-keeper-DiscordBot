@@ -2,6 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/config/default_config.ini
+/config/config.ini
 /env
 /__pycache__
+/.vs

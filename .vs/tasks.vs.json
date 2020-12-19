@@ -5,6 +5,11 @@
       "taskLabel": "task-Rollin-Bot",
       "appliesTo": "bot.py",
       "type": "launch"
+    },
+    {
+      "taskLabel": "task-Rollin-Bot",
+      "appliesTo": "/",
+      "type": "launch"
     }
   ]
 }
