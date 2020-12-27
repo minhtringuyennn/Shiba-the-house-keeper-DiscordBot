@@ -225,7 +225,7 @@ class VoiceState:
                 except asyncio.TimeoutError:
                     self.bot.loop.create_task(self.stop())
                     return
-
+                    
             self.current.source.volume = self._volume
             self.voice.play(self.current.source, after=self.play_next_song)
             await self.current.source.channel.send(embed=self.current.create_embed())
@@ -273,7 +273,7 @@ class Music(commands.Cog):
     def cog_check(self, ctx: commands.Context):
         if not ctx.guild:
             raise commands.NoPrivateMessage('This command can\'t be used in DM channels.')
-
+        
         return True
 
     async def cog_before_invoke(self, ctx: commands.Context):
@@ -476,7 +476,7 @@ class Music(commands.Cog):
 
         # Inverse boolean value to loop and unloop.
         ctx.voice_state.loop = not ctx.voice_state.loop
-        await ctx.message.add_reaction('✅')
+        await ctx.message.add_reaction('♾️')
 
     @commands.command(name='play', aliases=['p'])
     async def _play(self, ctx: commands.Context, *, search: str):
@@ -499,9 +499,10 @@ class Music(commands.Cog):
                 await ctx.send('Có một điểm dị thường xảy ra khi xử lý bài hát này: {}'.format(str(e)))
             else:
                 song = Song(source)
-
                 await ctx.voice_state.songs.put(song)
                 await ctx.send('Đã thêm vào hàng chờ: {}'.format(str(source)))
+                if not ctx.voice_state.is_playing:
+                    ctx.voice_state.audio_player = self.bot.loop.create_task(ctx.voice_state.audio_player_task())
 
     @_join.before_invoke
     @_play.before_invoke
