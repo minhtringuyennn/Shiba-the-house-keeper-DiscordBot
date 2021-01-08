@@ -70,16 +70,16 @@ class Funny(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def owo(ctx):
+    async def owo(self, ctx):
         await ctx.send("OwO")
 
     @commands.command()
-    async def OwO(ctx):
+    async def OwO(self, ctx):
         await ctx.send("OwO")
 
     #etou...
     @commands.command()
-    async def etou(ctx, *, input = ""):
+    async def etou(self, ctx, *, input = ""):
         if input == "":
             await ctx.send("etou... 👉👈")
         else:
