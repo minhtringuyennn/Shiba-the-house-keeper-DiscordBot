@@ -1,11 +1,13 @@
 ﻿from discord.ext import commands
 import configparser
 import discord
+import os
 class DefaultCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         read_config = configparser.ConfigParser()
-        read_config.read("./config/config.ini")
+        path = os.path.join(os.path.dirname(__file__), "config", "config.ini")
+        read_config.read(path)
         self.LogID = read_config.get("config", "LogChannel")
     @commands.Cog.listener()
     async def on_command(self,ctx):

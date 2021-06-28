@@ -3,6 +3,7 @@ import configparser
 import discord
 from discord.ext import commands
 # import youtube_dl
+import pathlib
 import string
 import os
 import default
@@ -14,7 +15,8 @@ import music_bot
 class MyBot(commands.Bot):
     def read_config(self):
         read_config = configparser.ConfigParser()
-        read_config.read("./config/config.ini")
+        path = os.path.join(os.path.dirname(__file__), "config", "config.ini")
+        read_config.read(path)
         self.__TOKEN = read_config.get("config", "Token")
         self.PREFIX = read_config.get("config", "CommandPrefix")
     def __init__(self):
