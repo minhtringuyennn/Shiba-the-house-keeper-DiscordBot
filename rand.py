@@ -9,6 +9,7 @@ import voice
 class Random(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        
     @commands.command()
     async def roll(self,ctx, *, input="5"):
         # Init
@@ -20,7 +21,6 @@ class Random(commands.Cog):
             seconds = int(5)
         seconds = max(seconds, 5)
         seconds = min(seconds, 90)
-
         # First Message
         embed = discord.Embed(title="Ai là người tiếp theo?!", color=ctx.author.color)
         hours = 7
@@ -81,7 +81,6 @@ class Random(commands.Cog):
         
     @commands.command()
     async def rollroom(self, ctx, *, input="5"):
-        
         # Init
         if (input.isnumeric() == 0):
             await ctx.send(f"Nhập không hợp lệ rồi bạn ơi, thất bại quá đi <:pepe_suicide:758735705882361887>")
@@ -149,6 +148,7 @@ class Random(commands.Cog):
             await ctx.send(f"Có đáp án rõ ràng thế lại còn gì hả {author.mention} <:meow_glance:758735706360774666>")
             return
         await ctx.send(f"Tôi chọn `{value}` nhé {author.mention} <:meow_huh:759037054725128242>")
+
     @commands.command()
     async def remainTurn(ctx, mininput="1", maxinput="10"):
         # Init
@@ -160,6 +160,6 @@ class Random(commands.Cog):
         # Calc
         mininput = int(mininput)
         maxinput = int(maxinput)
-        turn = randint(mininput, maxinput)
+        turn = random.randint(mininput, maxinput)
         # Return result
         await  ctx.send(f"Hãy chơi thêm {turn} lượt nữa!")

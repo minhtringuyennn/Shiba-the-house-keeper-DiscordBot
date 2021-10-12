@@ -40,7 +40,6 @@ class Funny(commands.Cog):
     #Shouting to someone
     @commands.command()
     async def shout(self,ctx, *, input= ""): 
-        await ctx.message.delete()
         output = ""
         for char in input: 
             if char.isalpha(): 
@@ -71,20 +70,17 @@ class Funny(commands.Cog):
 
     @commands.command()
     async def owo(self, ctx):
-        await ctx.message.delete()
         await ctx.send("**OwO**")
         await ctx.send(f"- _{ctx.message.author.name}_")
 
     @commands.command()
     async def OwO(self, ctx):
-        await ctx.message.delete()
         await ctx.send("**OwO**")
         await ctx.send(f"- _{ctx.message.author.name}_")
 
     #etou...
     @commands.command()
     async def etou(self, ctx, *, input = ""):
-        await ctx.message.delete()
         if input == "":
             await ctx.send("etou... 👉👈")
         else:
