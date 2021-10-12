@@ -11,7 +11,7 @@ import voice
 import rand
 import vote
 import funny
-import music_bot
+#import music_bot
 class MyBot(commands.Bot):
     def read_config(self):
         read_config = configparser.ConfigParser()
@@ -33,6 +33,6 @@ if __name__ == "__main__":
     bot.add_cog(rand.Random(bot))
     bot.add_cog(vote.Vote(bot))
     bot.add_cog(funny.Funny(bot))
-    bot.add_cog(music_bot.Music(bot))
+#    bot.add_cog(music_bot.Music(bot))
     bot.run()
 

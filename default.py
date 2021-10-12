@@ -14,6 +14,7 @@ class DefaultCommands(commands.Cog):
         # you'll need this because you're also using cmd decorators
         channel = self.bot.get_channel(int(self.LogID))
         await channel.send(f'{ctx.message.author} run `{ctx.message.content}` in channel `{ctx.message.channel}` in server `{ctx.message.guild}`')
+
     @commands.Cog.listener()
     async def on_ready(self):
         print('Ready!')
@@ -25,12 +26,12 @@ class DefaultCommands(commands.Cog):
         if isinstance(error, commands.MissingPermissions):
             await ctx.send("Tưởng rằng lệnh sẽ được thực thi sao??? Không! Đây là Dio <:jco:781338022078840832>")
             return
-        if isinstance(error, commands.CommandNotFound):
-            await ctx.send(f"Nhập sai lệnh rồi bạn ơi, thất bại quá đi <:pepe_suicide:758735705882361887>")
-            await ctx.send(f"`{ctx.message.content}` không phải là một lệnh được bot hỗ trợ ở thời điểm hiện tại")
-            await ctx.send(f"Các lệnh mà bot hỗ trợ:")
-            await self.help(ctx)
-            return
+        #if isinstance(error, commands.CommandNotFound):
+        #    await ctx.send(f"Nhập sai lệnh rồi bạn ơi, thất bại quá đi <:pepe_suicide:758735705882361887>")
+        #    await ctx.send(f"`{ctx.message.content}` không phải là một lệnh được bot hỗ trợ ở thời điểm hiện tại")
+        #    await ctx.send(f"Các lệnh mà bot hỗ trợ:")
+        #    await self.help(ctx)
+        #    return
     
     @commands.command(pass_context=True)
     async def help(self,ctx): 

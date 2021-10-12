@@ -40,8 +40,8 @@ class Funny(commands.Cog):
     #Shouting to someone
     @commands.command()
     async def shout(self,ctx, *, input= ""): 
+        await ctx.message.delete()
         output = ""
-    
         for char in input: 
             if char.isalpha(): 
                 if char.islower(): 
@@ -63,7 +63,7 @@ class Funny(commands.Cog):
             await ctx.send(f"{output}")
         else:
             await ctx.send(f"ARGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
-
+        await ctx.send(f"- _{ctx.message.author.name}_")
         #send nud...gif
         embed = discord.Embed()
         embed.set_image(url='https://media1.tenor.com/images/9b29ee560a03a7441490e95778922aaa/tenor.gif')
@@ -71,20 +71,26 @@ class Funny(commands.Cog):
 
     @commands.command()
     async def owo(self, ctx):
-        await ctx.send("OwO")
+        await ctx.message.delete()
+        await ctx.send("**OwO**")
+        await ctx.send(f"- _{ctx.message.author.name}_")
 
     @commands.command()
     async def OwO(self, ctx):
-        await ctx.send("OwO")
+        await ctx.message.delete()
+        await ctx.send("**OwO**")
+        await ctx.send(f"- _{ctx.message.author.name}_")
 
     #etou...
     @commands.command()
     async def etou(self, ctx, *, input = ""):
+        await ctx.message.delete()
         if input == "":
             await ctx.send("etou... 👉👈")
         else:
             await ctx.send(f"{input}... 👉👈")
-
+        await ctx.send(f"- _{ctx.message.author.name}_")
+        
     #how long is your dick?
     @commands.command()
     async def penis(self,ctx, *, name=""):

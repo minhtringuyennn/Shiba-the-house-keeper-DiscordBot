@@ -6,10 +6,12 @@ import emoji
 class Vote(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    inter_total = []
+    #inter_total = []
+
     @commands.command()
-    async def createvote(self, ctx,*, id = ""):
-        await ctx.message.delete()
+    async def createvote(self, ctx, *, id = ""):
+        #print(ctx)
+        #await ctx.message.delete()
         if (id == ""):
             logs =  await ctx.channel.history(limit=1).flatten()
             msg = logs[0]
@@ -27,10 +29,11 @@ class Vote(commands.Cog):
                 lookup = custom_match.group(1)  
                 await msg.add_reaction(discord.utils.get(ctx.message.guild.emojis, name=lookup))
             else:
-                for emj in lt.split(' '):
+                for emj in lt.split(''):
                     if emj in emoji.UNICODE_EMOJI:
                         await msg.add_reaction(emj)
         try:
-            await msg.remove_reaction("<:amongus_VOTED:764909622754017322>",self.bot.user)
+            await ctx.message.delete()
+            #await msg.remove_reaction("<:amongus_VOTED:764909622754017322>",self.bot.user)
         except:
             return
