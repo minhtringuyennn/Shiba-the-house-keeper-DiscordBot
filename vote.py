@@ -10,10 +10,11 @@ class Vote(commands.Cog):
 
     @commands.command()
     async def createvote(self, ctx, *, id = ""):
+        await ctx.message.delete()
         #print(ctx)
         if (id == ""):
-            logs =  await ctx.channel.history(limit=2).flatten()
-            msg = logs[1]
+            logs =  await ctx.channel.history(limit=1).flatten()
+            msg = logs[0]
         else:
             msg = await ctx.channel.fetch_message(id)
         #print(msg.content)

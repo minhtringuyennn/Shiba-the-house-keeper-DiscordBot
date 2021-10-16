@@ -6,7 +6,8 @@ import random
 class Funny(commands.Cog):
     #OwO what's this
     @commands.command()
-    async def mock(self, ctx, *, input= ""): 
+    async def mock(self, ctx, *, input= ""):
+        await ctx.message.delete()
         output = ""
         for char in input: 
             if char.isalpha(): 
@@ -39,7 +40,8 @@ class Funny(commands.Cog):
 
     #Shouting to someone
     @commands.command()
-    async def shout(self,ctx, *, input= ""): 
+    async def shout(self,ctx, *, input= ""):
+        await ctx.message.delete()
         output = ""
         for char in input: 
             if char.isalpha(): 
@@ -70,17 +72,20 @@ class Funny(commands.Cog):
 
     @commands.command()
     async def owo(self, ctx):
+        await ctx.message.delete()
         await ctx.send("**OwO**")
         await ctx.send(f"- _{ctx.message.author.name}_")
 
     @commands.command()
     async def OwO(self, ctx):
+        await ctx.message.delete()
         await ctx.send("**OwO**")
         await ctx.send(f"- _{ctx.message.author.name}_")
 
     #etou...
     @commands.command()
     async def etou(self, ctx, *, input = ""):
+        await ctx.message.delete()
         if input == "":
             await ctx.send("etou... 👉👈")
         else:
@@ -114,8 +119,13 @@ class Funny(commands.Cog):
     @commands.command()
     async def simprate(self,ctx, *, name=""):
         rate = randint(0, 100)
-        if (ctx.message.author.id in [506827356489515020,340643391618547712,624210700528779266]):
+        realsimp =  [506827356489515020,340643391618547712]
+        if (ctx.message.author.id in realsimp):
             rate = randint(90, 100)
+        for id in realsimp:
+            if (str(id) in ctx.message.content):
+                rate = randint(90, 100)
+                break
         tobe = "is"
         if len(name) == 0:
             name = "you"
