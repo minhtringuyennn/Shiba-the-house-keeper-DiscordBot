@@ -3,6 +3,7 @@ import configparser
 import discord
 import os
 import asyncio
+import time
 
 class DefaultCommands(commands.Cog):
     def __init__(self, bot):
@@ -37,8 +38,14 @@ class DefaultCommands(commands.Cog):
         #    await self.help(ctx)
         #    return
     
+    # @commands.command(name="pong")
+    # async def pong(self, ctx: commands.Context):
+    #   start_time = time.time()
+    #   end_time = time.time()
+    #   await message.edit(content=f"Pong! {round(self.bot.latency * 1000)}ms\nAPI: {round((end_time - start_time) * 1000)}ms")
+
     @commands.command(pass_context=True)
-    async def help(self,ctx): 
+    async def help(self, ctx): 
         # author = ctx.message.author
         embed = discord.Embed(
             coulour=discord.Color.red()

@@ -80,16 +80,16 @@ class Random(commands.Cog):
         await ctx.send(embed=embed)
         
     @commands.command()
-    async def rollroom(self, ctx, *, input="5"):
+    async def rollroom(self, ctx, *, input="1"):
         # Init
         if (input.isnumeric() == 0):
-            await ctx.send(f"Nhập không hợp lệ rồi bạn ơi, thất bại quá đi <:pepe_suicide:758735705882361887>")
+            await ctx.send("Nhập không hợp lệ rồi bạn ơi, thất bại quá đi <:pepe_suicide:758735705882361887>")
             return
 
         seconds = int(input)
         if seconds <= 0:
-            seconds = int(5)
-        seconds = max(seconds, 5)
+            seconds = int(1)
+        seconds = max(seconds, 1)
         seconds = min(seconds, 90)
         # Check
         if ctx.author.voice and ctx.author.voice.channel:
@@ -106,28 +106,31 @@ class Random(commands.Cog):
         embed.add_field(name="Kết thúc vào: ", value=f"{end}")
         embed.set_footer(text=f"Kết thúc trong {seconds} giây nữa!")
         my_msg = await ctx.send(embed=embed)
+
         # Waiting
         while (seconds > 0):
-            if (seconds > 5):
-                await asyncio.sleep(5)
-                seconds = seconds - 5
-            else:
-                await asyncio.sleep(1)
-                seconds = seconds - 1
-            embed.set_footer(text=f"Kết thúc trong {seconds} giây nữa!")
+            await asyncio.sleep(1)
+            seconds = seconds - 1
+            embed.set_footer(text=f'Kết thúc trong {seconds} giây nữa!')
             await my_msg.edit(embed=embed)
+
         room.refresh(ctx)
         members = room.members
+
         # Second message
-        if len(members) != 0:
+        if len(members) >= 2:
+            #Prevent repeat
             chosen = random.choice(members)
+            while chosen == ctx.author:
+                chosen = random.choice(members)
+
             embed.set_footer(text=f'Người lên thớt tiếp theo chính là {chosen.name}')
             await my_msg.edit(embed=embed)
-            await ctx.send(f"Ỏ, tới bạn kìa {chosen.mention} <:meow_woah:759037054968397904>")
+            await ctx.send(f'Ỏ, tới bạn kìa {chosen.mention} <:pikachu_smile:767261524879867914>')
         else:
             embed.set_footer(text='Không tìm thấy người may mắn tiếp theo. 404 Not Found!!!')
             await my_msg.edit(embed=embed)
-            await ctx.send("Ủa đâu mất tiêu hết rồi mấy ba? <:voli:784077759001526272>")
+            await ctx.send("Ủa đâu mất tiêu hết rồi mấy ba? <:meo_chmuahme:772813299251150849>")
         
     @commands.command()
     async def choose(self, ctx, *, input=""):
