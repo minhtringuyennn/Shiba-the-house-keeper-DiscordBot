@@ -2,6 +2,7 @@ import os
 import asyncio
 import discord
 import datetime
+from discord.ext.commands import bot
 import requests
 import configparser
 from discord.ext import commands
@@ -12,15 +13,19 @@ read_config.read(path)
 
 TENOR_API_KEY = read_config.get("config", "tenorAPIKey")
 
-servers = {}
+servers = {
+    "913432678156619866": "true",
+}
 
 confession_channel = {
 	# server_id : confession_channel_id
-	447040511681757184 : 779746460236775495
+	913432678156619866 : 913432678618005575
 }
 
 class Confess(commands.Cog):
-    
+    def __init__(self, bot):
+        self.bot = bot
+
     def is_int(s):
         try: 
             int(s)
@@ -88,14 +93,21 @@ class Confess(commands.Cog):
             
         except asyncio.TimeoutError:
             return
-    
-    @commands.command()
+
+    @commands.command(aliases=['cfs'])
     @commands.dm_only()
     async def confession(self, ctx):
-        mutual_servers = []
-        for guild in self.commands.guilds:
-            if ctx.author.id in servers[guild.id]:
-                mutual_servers.append(guild)
+        mutual_servers = ctx.author.mutual_guilds.copy()
+
+        print("===================")
+        try:
+            bot = self.bot
+            print(type(ctx.author.mutual_guilds))
+            # for guild in ctx.author.mutual_guilds:
+            #     mutual_servers.append(guild)
+        except Exception as e:
+            print(e)
+        print("===================")
         
         embedVar = discord.Embed(title = 'Chọn Server')
         embedVar.description = '**'
