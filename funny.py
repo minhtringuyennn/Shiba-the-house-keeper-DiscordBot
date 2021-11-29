@@ -7,16 +7,23 @@ import praw
 import configparser
 import os
 from PIL import Image, ImageDraw, ImageFont
+import time
+from datetime import datetime
+from datetime import timedelta
+import requests
 
 PATH = "/root/Shiba-the-house-keeper/"
 
 read_config = configparser.ConfigParser()
 path = os.path.join(os.path.dirname(__file__), "config", "config.ini")
 read_config.read(path)
-REDDITID = read_config.get("config", "redditCilentID")
-REDDITSECRET = read_config.get("config", "redditSecretKey")
-reddit = praw.Reddit(client_id = REDDITID,
-                     client_secret= REDDITSECRET,
+
+REDDIT_ID = read_config.get("config", "redditCilentID")
+REDDIT_SECRET = read_config.get("config", "redditSecretKey")
+TENOR_API_KEY = read_config.get("config", "tenorAPIKey")
+
+reddit = praw.Reddit(client_id = REDDIT_ID,
+                     client_secret= REDDIT_SECRET,
                      user_agent= "github - minhtringuyennn")
 
 class Funny(commands.Cog):
@@ -86,26 +93,8 @@ class Funny(commands.Cog):
         embed.set_image(url='https://media1.tenor.com/images/9b29ee560a03a7441490e95778922aaa/tenor.gif')
         await ctx.send(embed=embed)
 
-    @commands.command()
-    async def owo(self, ctx):
-        await ctx.message.delete()
-        await ctx.send("**OwO**")
-        await ctx.send(f"- _{ctx.message.author.name}_")
-
-    @commands.command()
-    async def OwO(self, ctx):
-        await ctx.message.delete()
-        await ctx.send("**OwO**")
-        await ctx.send(f"- _{ctx.message.author.name}_")
-    
-    @commands.command()
-    async def UwU(self, ctx):
-        await ctx.message.delete()
-        await ctx.send("**UwU**")
-        await ctx.send(f"- _{ctx.message.author.name}_")
-
-    @commands.command()
-    async def uwu(self, ctx):
+    @commands.command(aliases=['uwu', 'UwU', 'owo', 'OwO'])
+    async def uwuwu(self, ctx):
         await ctx.message.delete()
         await ctx.send("**uwu**")
         await ctx.send(f"- _{ctx.message.author.name}_")
@@ -174,11 +163,11 @@ class Funny(commands.Cog):
         # await ctx.message.delete()
         await ctx.send("Hể í yỏu mêm <:meo_phecan:772700153806716928>")
 
-        communities_list = ["memes", "dankmemes"]
+        communities_list = ["memes", "dankmemes", "HolUp", "me_irl", "Whatcouldgowrong", "HistoryMemes"]
         commuinity = random.choice(communities_list)
         post_to_pick = random.randint(1, 50)
         
-        _submissions = reddit.subreddit(commuinity).hot()
+        _submissions = reddit.subreddit(commuinity).top("week")
         submission = _submissions
 
         # https://i. -> image, v -> video
@@ -193,11 +182,11 @@ class Funny(commands.Cog):
         # await ctx.message.delete()
         await ctx.send("Nè, vui lên đi, bitch <:meow_lovelybutt:759037054507810838>")
 
-        communities_list = ["aww", "wholesomegifs", "Eyebleach"]
+        communities_list = ["aww", "wholesomegifs", "Eyebleach", "MadeMeSmile"]
         commuinity = random.choice(communities_list)
         post_to_pick = random.randint(1, 50)
         
-        _submissions = reddit.subreddit(commuinity).hot()
+        _submissions = reddit.subreddit(commuinity).top("week")
         submission = _submissions
 
         # https://i. -> image, v -> video
@@ -240,7 +229,7 @@ class Funny(commands.Cog):
 
     @commands.command(aliases=['luv', 'sendluv'])
     async def luvu(self, ctx, *, name = ""):
-        await ctx.message.delete()
+        # await ctx.message.delete()
         
         base = Image.open(PATH + "meme_img/luv.jpg").convert("RGBA")
         txt = Image.new("RGBA", base.size, (255, 255, 255, 0))
@@ -259,8 +248,6 @@ class Funny(commands.Cog):
             tag_name = name
             author_name = ctx.message.author.nick
         
-        await ctx.send(f"**{author_name}** đã gửi tình yêu siêu bự đến **{tag_name}** đóooooo <:meow_xoadau:759037054431658036>")
-
         author = ImageDraw.Draw(txt)
         author.text((170, 45), author_name, font=fnt, fill=(0, 0, 0, 255), anchor = "mm")
         
@@ -270,14 +257,17 @@ class Funny(commands.Cog):
         out = Image.alpha_composite(base, txt)
         out.save('luv.png')
         
+        if len(name) != 0:
+            tag_name = name
+
+        await ctx.send(f"**{author_name}** đã gửi tình yêu siêu bự đến **{tag_name}** đóooooo <:meow_xoadau:759037054431658036>")
         await ctx.send(file=discord.File('luv.png'))
 
     @commands.command(aliases=['nhagiatran', 'nvat'])
-    async def at(self, ctx, *, input=""):
-        str_title = "Nhà **giả trân học** *Nguyễn Võ Anh Thư* đã từng nói rằng:'"
-        
-        if input == "trầm cảm":
-            str_des = "'*Đừng trầm cảm!\nTại sao lại trầm cảm khi bạn có thể không trầm cảm?* '"
+    async def at(self, ctx, *, input="trầm cảm"):
+        str_title = "Nhà giả trân học Nguyễn Võ Anh Thư đã từng nói rằng:"
+
+        str_des = f"'*Đừng {input}!\nTại sao bạn lại {input} khi bạn có thể không {input} nữa?* '"
 
         return await ctx.send(content=str_title + '\n' + str_des)
 
@@ -295,12 +285,55 @@ class Funny(commands.Cog):
         embed.set_image(url='https://c.tenor.com/QfBQk0quoS8AAAAM/corgi-cute.gif')
         await ctx.send(embed=embed)
 
-    @commands.command(pass_context=True)
-    async def gudbot(self, ctx):
+    @commands.command(aliases=['gudbot', 'gudboy'])
+    async def gud(self, ctx):
         await ctx.send(f"Cảm ơn nheee {ctx.author.name} <:meow_lovelybutt:759037054507810838>")
         embed = discord.Embed()
         embed.set_image(url='https://i.redd.it/isvpnmalxks71.gif')
         await ctx.send(embed=embed)
+
+    @commands.command(aliases=['hasagi', 'yasou'])
+    async def hasagiii(self, ctx):
+        qoutes = [
+            "Death is like the wind - always by my side.",
+            "No cure for fools.",
+            "Whispers in the wind speak of a masked swordsman with two blades.",
+            "A sword's poor company for a long road.",
+            "My honor left a long time ago.",
+            "No-one is promised tomorrow.",
+            "Follow the wind, but watch your back.",
+            "This blade never gets any lighter.",
+            "Virtue is no more than a luxury.",
+            "The road to ruin is shorter than you think.",
+            "Sleep is for the guiltless.",
+            "Justice. That's a pretty word.",
+            "Hmph. One step ahead of the past.",
+            "A wanderer isn't always lost.",
+            "Just looking for a road home.",
+            "Never could stay in one place.",
+            "I will follow this path until the end.",
+            "Honor is in the heart, not the name.",
+            "I will not forget who I am.",
+            "This story is not yet finished.",
+            "Is a leaf's only purpose to fall?",
+            "Hmh... dying's the easy part.",
+        ]
+        
+        choose_qoute = random.choice(qoutes)
+        url = "https://c.tenor.com/WGSFhjmEBm4AAAAC/yasuo-lol.gif"
+        result = requests.get(f"https://api.tenor.com/v1/search?q=yasuo&key={TENOR_API_KEY}&limit=50")
+        
+        if result.status_code == 200:
+            json_result = result.json()
+            json_check = json_result['next']
+            if json_check == "0":
+                await ctx.send("{} I didn't found any yasuo gifs".format(ctx.message.author.mention))
+            else:
+                gif = random.choice(json_result['results'])
+                url = gif['media'][0]['gif']['url']
+                #url = gif['media']['gif']['url']
+        await ctx.send(f"**{choose_qoute}** - *_Yasou_*")
+        await ctx.send(str(url))
     
     @commands.command(pass_context=True)
     async def kkk(self, ctx):
@@ -321,3 +354,52 @@ class Funny(commands.Cog):
 
         await ctx.send(f"*{msg}*")
         await ctx.send(file=discord.File(img_list[choice]))
+        await ctx.message.delete()
+
+    @commands.command(aliases=['hug', 'sendhug'])
+    async def hugmeuwu(self, ctx, *, name = ""):
+        # await ctx.message.delete()
+        if len(name) == 0:
+            tag_name = ctx.message.author.name
+            author_name = "Shiba Bot"
+        elif len(name) == 22:
+            userID = name[3:-1]
+            user_name = await ctx.guild.fetch_member(userID)
+            tag_name = user_name.nick
+            author_name = ctx.message.author.nick
+        else:
+            tag_name = name
+            author_name = ctx.message.author.nick
+
+        # Image editor
+        base1 = Image.open(PATH + "meme_img/hug1.png").convert("RGBA")
+        base2 = Image.open(PATH + "meme_img/hug2.png").convert("RGBA")
+        
+        txt1 = Image.new("RGBA", base1.size, (255, 255, 255, 0))
+        txt2 = Image.new("RGBA", base2.size, (255, 255, 255, 0))
+
+        fnt = ImageFont.truetype(PATH + "Montserrat.ttf", 75)
+        fnt2 = ImageFont.truetype(PATH + "Montserrat.ttf", 60)
+        
+        author1 = ImageDraw.Draw(txt1)
+        tag1 = ImageDraw.Draw(txt1)
+        author1.text((520, 600), author_name, font=fnt, fill=(0, 0, 0, 255), stroke_width=6, stroke_fill=(255, 255, 255, 255), anchor = "mm")
+        tag1.text((700, 195), tag_name, font=fnt2, fill=(0, 0, 0, 255), stroke_width=6, stroke_fill=(255, 255, 255, 255), anchor = "mm")
+
+        author2 = ImageDraw.Draw(txt2)
+        tag2 = ImageDraw.Draw(txt2)
+        author2.text((460, 300), author_name, font=fnt, fill=(0, 0, 0, 255), stroke_width=6, stroke_fill=(255, 255, 255, 255), anchor = "mm")
+        tag2.text((500, 750), tag_name, font=fnt2, fill=(0, 0, 0, 255), stroke_width=6, stroke_fill=(255, 255, 255, 255), anchor = "mm")
+
+        out1 = Image.alpha_composite(base1, txt1)
+        out1.save('hug1.png')
+
+        out2 = Image.alpha_composite(base2, txt2)
+        out2.save('hug2.png')
+        
+        if len(name) != 0:
+            tag_name = name
+
+        await ctx.send(f"**{author_name}** đã gửi một cái ôm đến **{tag_name}** đóooooo <:meow_lovelybutt:759037054507810838>")
+        await ctx.send(file=discord.File('hug1.png'))
+        await ctx.send(file=discord.File('hug2.png'))

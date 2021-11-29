@@ -1,9 +1,11 @@
 ﻿from discord.ext import commands
+from discord.ext import tasks
 import configparser
 import discord
 import os
-import asyncio
 import time
+import asyncio
+from datetime import datetime
 
 class DefaultCommands(commands.Cog):
     def __init__(self, bot):
@@ -12,8 +14,9 @@ class DefaultCommands(commands.Cog):
         path = os.path.join(os.path.dirname(__file__), "config", "config.ini")
         read_config.read(path)
         self.LogID = read_config.get("config", "LogChannel")
+    
     @commands.Cog.listener()
-    async def on_command(self,ctx):
+    async def on_command(self, ctx):
         # you'll need this because you're also using cmd decorators
         channel = self.bot.get_channel(int(self.LogID))
         await channel.send(f'{ctx.message.author} run `{ctx.message.content}` in channel `{ctx.message.channel}` in server `{ctx.message.guild}`')
@@ -23,6 +26,8 @@ class DefaultCommands(commands.Cog):
         print('Ready!')
         print('Logged in as ---->', self.bot.user)
         print('ID:', self.bot.user.id)
+        if not del_cfs_msg.is_running():
+            del_cfs_msg.start()
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
@@ -31,6 +36,7 @@ class DefaultCommands(commands.Cog):
             return
         channel = self.bot.get_channel(int(self.LogID))
         await channel.send(f'command `{ctx.message.content}` at channel `{ctx.message.channel}` in server `{ctx.message.guild}` error: `{error}')
+
         #if isinstance(error, commands.CommandNotFound):
         #    await ctx.send(f"Nhập sai lệnh rồi bạn ơi, thất bại quá đi <:pepe_suicide:758735705882361887>")
         #    await ctx.send(f"`{ctx.message.content}` không phải là một lệnh được bot hỗ trợ ở thời điểm hiện tại")
@@ -43,6 +49,21 @@ class DefaultCommands(commands.Cog):
     #   start_time = time.time()
     #   end_time = time.time()
     #   await message.edit(content=f"Pong! {round(self.bot.latency * 1000)}ms\nAPI: {round((end_time - start_time) * 1000)}ms")
+
+    @commands.command(aliases=['rmmsg', 'delete'])
+    async def remove_msg(self, ctx, *, number = 5):
+        this_channel = ctx.message.channel.id
+        
+        # logs channel, confession channel and request channel
+        accepted_channel = [899925135279132683, 789157458647711785, 791112384924090389]
+        
+        if this_channel in accepted_channel:
+            number += 1
+            await ctx.message.delete();
+            await ctx.channel.purge(limit=number)
+            await ctx.send(f"**{ctx.message.author.nick}** *đã phong ấn {number - 1} tin nhắn vào hư vô* ***mãi mãi.***")
+        else:
+            await ctx.send(f"Êi, đừng lạm dụng phong ấn, sẽ bị tha hoá bởi quyền lực đó bạn ơi <:pepe_deepthink:758735705912115203>")
 
     @commands.command(pass_context=True)
     async def help(self, ctx): 
@@ -92,8 +113,5 @@ class DefaultCommands(commands.Cog):
         embed.add_field(name='>createvote',
                         value='Có 2 kiểu: " >createvote " sẽ add emoji ở tin nhắn gần đó nhất và " >createvote {message id} "',
                         inline=False)
-        embed.add_field(name='>nhagiatran',
-                        value='nhập "trầm cảm" để được nghe những câu nói giả trân nhất từ AT :>',
-                        inline=False)                
         # await author.send(embed=embed)
         await ctx.send(embed=embed)

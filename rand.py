@@ -81,6 +81,8 @@ class Random(commands.Cog):
         
     @commands.command()
     async def rollroom(self, ctx, *, input="1"):
+        random.seed(datetime.datetime.now())
+        
         # Init
         if (input.isnumeric() == 0):
             await ctx.send("Nhập không hợp lệ rồi bạn ơi, thất bại quá đi <:pepe_suicide:758735705882361887>")
