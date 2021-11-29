@@ -19,21 +19,21 @@ servers = {
 
 confession_channel = {
 	# server_id : confession_channel_id
-	913432678156619866 : 913432678618005575
+	447040511681757184 : 779746460236775495
 }
 
 class Confess(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def is_int(s):
+    def is_int(self, arg):
         try: 
-            int(s)
+            int(arg)
             return True
         except ValueError:
             return False
 
-    def get_tenor_url(view_url):
+    def get_tenor_url(self, view_url):
         if view_url.lower().endswith('gif'):
             return view_url
         gif_id = view_url.split('-')[-1]
@@ -51,7 +51,7 @@ class Confess(commands.Cog):
             gif_id = view_url.split('-')[-1]
             return f'https://media.giphy.com/media/{gif_id}/giphy.gif'
 
-    def prepare_embed(msg):
+    def prepare_embed(self, msg):
         embedVar = discord.Embed(title='Anonymous Confession')
         embedVar.timestamp = datetime.datetime.utcnow()
 
@@ -65,11 +65,11 @@ class Confess(commands.Cog):
                 if data.url == msg.content:
                     embedVar.description = None
             if data.type == 'gifv' and data.provider.name == 'Tenor':
-                embedVar.set_image(url=get_tenor_url(data.url))
+                embedVar.set_image(url=self.get_tenor_url(data.url))
                 if data.url == msg.content:
                     embedVar.description = None
             if data.type == 'gifv' and data.provider.name == 'Giphy':
-                embedVar.set_image(url=get_giphy_url(data.url))
+                embedVar.set_image(url=self.get_giphy_url(data.url))
                 if data.url == msg.content:
                     embedVar.description = None
 
@@ -82,12 +82,12 @@ class Confess(commands.Cog):
 
         return embedVar
         
-    async def check_if_delete(msg, confession, confirmation):
+    async def check_if_delete(self, msg, confession, confirmation):
         def check(deleted_msg):
             return msg.id == deleted_msg.id
 
         try:
-            await self.commands.wait_for('message_delete', timeout=120, check=check)
+            await self.bot.wait_for('message_delete', timeout=120, check=check)
             await confession.delete()
             await confirmation.edit(content=f'✅ Confession với mã `{confession.id}` tại {confession.channel.mention} đã bị xoá.')
             
@@ -98,16 +98,6 @@ class Confess(commands.Cog):
     @commands.dm_only()
     async def confession(self, ctx):
         mutual_servers = ctx.author.mutual_guilds.copy()
-
-        print("===================")
-        try:
-            bot = self.bot
-            print(type(ctx.author.mutual_guilds))
-            # for guild in ctx.author.mutual_guilds:
-            #     mutual_servers.append(guild)
-        except Exception as e:
-            print(e)
-        print("===================")
         
         embedVar = discord.Embed(title = 'Chọn Server')
         embedVar.description = '**'
@@ -121,60 +111,75 @@ class Confess(commands.Cog):
         embedVar.set_footer(text='Bạn có một phút để chọn - gửi "cancel" để huỷ đăng.')
         await ctx.send(embed=embedVar)
 
-        def server_select(msg):
-            return msg.channel == ctx.channel and msg.author == ctx.author and ((is_int(msg.content) and int(msg.content) <= i and int(msg.content) >= 1) or msg.content == 'cancel')
+        def printTest(test):
+            print("===================")
+            print(test)
+            print("===================")
 
+        # waiting for select channel
         try:
-            msg = await self.commands.wait_for('message', timeout=60, check=server_select)
-        except asyncio.TimeoutError:
-            await ctx.send('⏳ Đã hết thời gian chọn server. Vui lòng gửi lại confession.')
-            return
+            def server_select(msg):
+                return msg.channel == ctx.channel and msg.author == ctx.author and ((self.is_int(msg.content) and int(msg.content) <= i and int(msg.content) >= 1) or msg.content == 'cancel')
 
-        if msg.content == 'cancel':
-            await ctx.send('✅ Đã huỷ')
-            return
-
-        guild = mutual_servers[int(msg.content) - 1]
-        confess_in = self.commands.get_channel(confession_channel[guild.id])
-        embedVar = discord.Embed()
-        embedVar.title = 'Gửi tại : ' + guild.name
-        embedVar.description = f'Gửi confession của bạn tại đây / hoặc gửi hình ảnh / up file ảnh ẩn danh tại {confess_in.mention}.'
-        embedVar.set_footer(text='Bạn có 2 phút để phản hồi - gửi "cancel" để huỷ')
-        await ctx.send(embed=embedVar)
-
-        def check_confess(msg):
-            return msg.channel == ctx.channel and msg.author == ctx.author
-
-        try:
-            msg = await self.commands.wait_for('message', timeout=120, check=check_confess)
-        except asyncio.TimeoutError:
-            await ctx.send('⏳ Bạn đã hết thời gian. Vui lòng gửi lại confession.')
-            return
-
-        if msg.content == 'cancel':
-            await ctx.send('✅ Đã huỷ')
-            return
-
-        confession = await confess_in.send(embed = prepare_embed(msg))
-        confirmation = await ctx.send(f'✅ Confession của bạn đã được thêm tại {confess_in.mention}!')
-
-        asyncio.create_task(check_if_delete(msg, confession, confirmation))
-
-        def check_edit(before, after):
-            return msg.id == after.id
-        
-        edit_count = 0
-        
-        if msg.edited_at:
-            await confession.edit(embed = prepare_embed(msg))
-            edit_count += 1
-            await confirmation.edit(content=f'✅ Cofession với id:`{confession.id}` tại {confess_in.mention} đã chỉnh sửa ({edit_count}) lần.')
-        
-        while True:
             try:
-                before, after = await self.commands.wait_for('message_edit', timeout=120, check=check_edit)
-                await confession.edit(embed = prepare_embed(after))
-                edit_count += 1
-                await confirmation.edit(content=f'✅ Confession với id `{confession.id}` tại {confess_in.mention} đã chỉnh sửa ({edit_count}) lần.')
+                msg = await self.bot.wait_for('message', timeout=60, check=server_select)
             except asyncio.TimeoutError:
+                await ctx.send('⏳ Đã hết thời gian chọn server. Vui lòng gửi lại confession.')
                 return
+        except Exception as e:
+            printTest(e)
+
+        if msg.content == 'cancel':
+            await ctx.send('✅ Đã huỷ')
+            return
+
+        # waiting for sending message
+        try:
+            guild = mutual_servers[int(msg.content) - 1]
+            confess_in = self.bot.get_channel(confession_channel[guild.id])
+            embedVar = discord.Embed()
+            embedVar.title = 'Gửi tại : ' + guild.name
+            embedVar.description = f'Gửi confession của bạn tại đây / hoặc gửi hình ảnh / up file ảnh ẩn danh tại {confess_in.mention}.'
+            embedVar.set_footer(text='Bạn có 2 phút để phản hồi - gửi "cancel" để huỷ')
+            await ctx.send(embed=embedVar)
+
+            def check_confess(msg):
+                return msg.channel == ctx.channel and msg.author == ctx.author
+
+            try:
+                msg = await self.bot.wait_for('message', timeout=120, check=check_confess)
+            except asyncio.TimeoutError:
+                await ctx.send('⏳ Bạn đã hết thời gian. Vui lòng gửi lại confession.')
+                return
+
+            if msg.content == 'cancel':
+                await ctx.send('✅ Đã huỷ')
+                return
+        except Exception as e:
+            printTest(e)
+        # finished sending confession 
+        try:
+            confession = await confess_in.send(embed = self.prepare_embed(msg))
+            confirmation = await ctx.send(f'✅ Confession của bạn đã được thêm tại {confess_in.mention}!')
+            asyncio.create_task(self.check_if_delete(msg, confession, confirmation))
+
+            def check_edit(before, after):
+                return before.content != after.content
+            
+            edit_count = 0
+            
+            if msg.edited_at:
+                await confession.edit(embed = self.prepare_embed(msg))
+                edit_count += 1
+                await confirmation.edit(content=f'✅ Cofession với id:`{confession.id}` tại {confess_in.mention} đã chỉnh sửa ({edit_count}) lần.')
+            
+            while True:
+                try:
+                    before, after = await self.bot.wait_for('message_edit', timeout=120, check=check_edit)
+                    await confession.edit(embed = self.prepare_embed(after))
+                    edit_count += 1
+                    await confirmation.edit(content=f'✅ Confession với id `{confession.id}` tại {confess_in.mention} đã chỉnh sửa ({edit_count}) lần.')
+                except asyncio.TimeoutError:
+                    return
+        except Exception as e:
+            printTest(e)
