@@ -113,6 +113,9 @@ class DefaultCommands(commands.Cog):
         embed.add_field(name='>createvote',
                         value='Có 2 kiểu: " >createvote " sẽ add emoji ở tin nhắn gần đó nhất và " >createvote {message id} "',
                         inline=False)
+        embed.add_field(name='>nhagiatran',
+                        value='Có 2 kiểu: " >nhagiatra " và " >nvat {nội dung} " \n hãy đoán xem đệ nhất giả trân, tiên tri zũ chụ nói gì về điều mà bạn muốn biết :pusheen_popcorn:',
+                        inline=False)
         embed.add_field(name='>confession',
                         value='Có 2 kiểu: " >cofession" và ">cfs" \n Muốn bày tỏ lời yêu thương ư? hãy dùng lệnh này \n Lưu ý: Bạn chỉ có thể gửi riêng lệnh này cho bot \n Bước 1: hãy chọn server mà bạn muốn gửi cfs \n Bước 2: Hãy nhập nội dung của cfs mà bạn định gửi \n Bước 3: kiểm tra channel confession thôi \n bạn cũng có thể xóa và sửa confession bằng cách xóa và sửa nội dung của bạn đã gửi cho bot',
                         inline=False)
