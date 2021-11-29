@@ -92,5 +92,8 @@ class DefaultCommands(commands.Cog):
         embed.add_field(name='>createvote',
                         value='Có 2 kiểu: " >createvote " sẽ add emoji ở tin nhắn gần đó nhất và " >createvote {message id} "',
                         inline=False)
+        embed.add_field(name='>nhagiatran',
+                        value='nhập "trầm cảm" để được nghe những câu nói giả trân nhất từ AT :>',
+                        inline=False)                
         # await author.send(embed=embed)
         await ctx.send(embed=embed)

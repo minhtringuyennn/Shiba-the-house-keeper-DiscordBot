@@ -271,6 +271,12 @@ class Funny(commands.Cog):
         out.save('luv.png')
         
         await ctx.send(file=discord.File('luv.png'))
+    @commands.command(aliases=['nhagiatran', 'nvat'])
+    async def at(self, ctx, *, input=""):
+        str_title = "Nhà **giả trân học** *Nguyễn Võ Anh Thư* đã từng nói rằng:'"
+        if input == "trầm cảm":
+            str_des = "'*Đừng trầm cảm!\nTại sao lại trầm cảm khi bạn có thể không trầm cảm?* '"
+        return await ctx.send(content=str_title + '\n' + str_des)
 
     @commands.command(pass_context=True)
     async def shiba(self, ctx):
