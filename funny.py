@@ -356,6 +356,93 @@ class Funny(commands.Cog):
         await ctx.send(file=discord.File(img_list[choice]))
         await ctx.message.delete()
 
+    @commands.command(aliases=['fine', 'imfine'])
+    async def finee(self, ctx, *, name = ""):
+        if len(name) == 0:
+            tag_name = ctx.message.author.name
+        elif len(name) == 22:
+            userID = name[3:-1]
+            user_name = await ctx.guild.fetch_member(userID)
+            tag_name = user_name.nick
+
+            if tag_name == "None":
+                tag_name = user_name.name
+        else:
+            tag_name = name
+
+        msg = "đã cố tỏ ra là mình ổn, nhưng sâu bên trong nước mắt là protein (lysozyme, lactoferrin và lipocalin), enzyme, chất béo, chất chuyển hóa (metabolites) và chất điện phân (electrolytes)"
+        await ctx.send(f"**{tag_name}** {msg}")
+
+    @commands.command(aliases=['thankyou', 'thankyouAT'])
+    async def tyat(self, ctx, *, name = ""):
+        if len(name) == 0:
+            tag_name = ctx.message.author.name
+        elif len(name) == 22:
+            userID = name[3:-1]
+            user_name = await ctx.guild.fetch_member(userID)
+            tag_name = user_name.nick
+
+            if tag_name == "None":
+                tag_name = user_name.name
+        else:
+            tag_name = name
+        
+        splitName = tag_name.split(" ")
+        hashTag = ""
+
+        for token in splitName:
+            hashTag += str(token).capitalize()
+
+        tag_name = "**" + tag_name + "**"
+
+        await ctx.send(f"...Nhớ ngày nào tôi cùng {tag_name} còn dẫn dắt từng bước chân chập chững trên con đường chơi LOL. Nôm vậy mà cũng đã được gần một năm. Sao mà quên đường những lúc cùng {tag_name} và những người anh em FWB khác chinh phục biết bao trận chiến, chu du qua bao nhiệm vụ. Thậm chí có lúc tưởng chừng như gục ngã, song, mọi người đã cùng nhau mỉm cười và vượt qua.\n\n\tGiờ đây, {tag_name} đã cũng tìm được những bến đỗ mới, nơi thực sự đem lại những khoảnh khắc tỏa sáng và hạnh phúc cho mình. Dẫu khó khăn để chấp nhận ngày 1 ngày 2 nhưng hơn ai hết, tôi biết rằng ai cũng nên cho những sự lựa chọn. Và {tag_name} chọn điểm đến mới cho cuộc đời mình.\n\n\tNhưng không sao, miễn là chúng ta còn nhớ nhau, còn yêu thương nhau, còn đùm bọc nhau thì không gì là không thể, {tag_name} nhỉ? Mong là team FWB sẽ không lạc vào nhà kho cũ kĩ trong tận sâu góc tối ký ức của {tag_name}. Và cũng không quên chúc {tag_name} luôn vui vẻ và thành công trên con đường và hành trình mới. Chúng tôi, team FWB, cũng sẽ tiếp tục mà không có {tag_name}. Mong cả hai sẽ phát triển ngày càng vững mạnh và phồn vinh.\n\n\tMột lần nữa, chân thành cảm ơn {tag_name} vì tất cả.\n\n#ThankYou{hashTag} #TeamFWB_MãiMặn")
+    
+    @commands.command(aliases=['tth', 'ca'])
+    async def trongtruonghop(self, ctx, *, name = "discord"):
+        await ctx.message.delete()
+        await ctx.send(f"Trong trường hợp {name} này bị điều tra bởi các cơ quan trực thuộc bộ công an (hoặc các tổ chức chính trị tương tự phục vụ cho nhà nước CHXHCNVN), tôi khẳng định mình không liên quan tới {name} hoặc những cá nhân khác trong {name} này. Tôi không rõ tại sao mình lại có mặt ở đây vào thời điểm này, có lẽ tài khoản của tôi đã được thêm bởi một bên thứ ba. Tôi cũng xin khẳng định rằng mình không hề giúp sức cho những hành động chống phá Đảng và nhà nước của các thành viên trong {name} này. Tôi cũng không quên khẳng định quyết tâm chiến thắng đại dịch Covid-19, nhấn mạnh chủ quyền không thể tranh cãi với quần đảo Hoàng Sa và Trường Sa, cũng như tính chính nghĩa của cuộc chiến giải phóng người dân Campuchia khỏi thảm họa diệt chủng Khmer Đỏ.")
+        
+    @commands.command(aliases=['thuocanthan', 'anthan'])
+    async def thuoc(self, ctx, *, input = ""):
+        sz = len(input)
+        author = ctx.message.author
+        list = input.split(", ")
+
+        if len(list) > 2:
+            await ctx.send("Dư tên rồi má!")
+            return
+
+        name = list[0]
+
+        if len(list) == 1:
+            name2 = ctx.message.author.name
+        elif len(list) == 2:
+            name2 = list[1]
+
+        if len(name) == 0:
+            tag_name = ctx.message.author.name
+        elif len(name) == 22:
+            userID = name[3:-1]
+            user_name = await ctx.guild.fetch_member(userID)
+            tag_name = user_name.nick
+
+            if tag_name == "None":
+                tag_name = user_name.name
+        else:
+            tag_name = name
+
+        if len(name2) == 22:
+            userID = name2[3:-1]
+            user_name = await ctx.guild.fetch_member(userID)
+            tag_name2 = user_name.nick
+
+            if tag_name2 == "None":
+                tag_name2 = user_name.name
+        else:
+            tag_name2 = name2
+
+        await ctx.send(f"Tại sao lúc vui {name} bao giờ cũng đang bận ?\nLúc bên {name2} bao giờ cũng đang giận ?\nNói chung {name2} chỉ là thuốc an thần\nVới {name} {name2} chỉ là thuốc an thần <:PepeKMS:916687813582393384>")
+
     @commands.command(aliases=['hug', 'sendhug'])
     async def hugmeuwu(self, ctx, *, name = ""):
         # await ctx.message.delete()
@@ -367,6 +454,9 @@ class Funny(commands.Cog):
             user_name = await ctx.guild.fetch_member(userID)
             tag_name = user_name.nick
             author_name = ctx.message.author.nick
+
+            if author_name == "None":
+                author_name = ctx.message.author.name
         else:
             tag_name = name
             author_name = ctx.message.author.nick

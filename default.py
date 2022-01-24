@@ -26,8 +26,6 @@ class DefaultCommands(commands.Cog):
         print('Ready!')
         print('Logged in as ---->', self.bot.user)
         print('ID:', self.bot.user.id)
-        if not del_cfs_msg.is_running():
-            del_cfs_msg.start()
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):

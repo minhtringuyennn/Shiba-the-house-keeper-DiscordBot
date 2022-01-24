@@ -13,13 +13,11 @@ read_config.read(path)
 
 TENOR_API_KEY = read_config.get("config", "tenorAPIKey")
 
-servers = {
-    "913432678156619866": "true",
-}
-
 confession_channel = {
 	# server_id : confession_channel_id
-	447040511681757184 : 779746460236775495
+	# 447040511681757184 : 779746460236775495, # Cfs channel of ruc lua
+    447040511681757184 : 932706258102919238, # Cfs channel of ruc lua
+    # 619199362848784404 : 917957576543571968, # Cfs channel of Design ITUS
 }
 
 class Confess(commands.Cog):
