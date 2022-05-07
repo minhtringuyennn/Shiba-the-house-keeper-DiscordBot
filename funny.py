@@ -167,7 +167,7 @@ class Funny(commands.Cog):
         commuinity = random.choice(communities_list)
         post_to_pick = random.randint(1, 50)
         
-        _submissions = reddit.subreddit(commuinity).top("week")
+        _submissions = reddit.subreddit(commuinity, check_for_async=False).top("week")
         submission = _submissions
 
         # https://i. -> image, v -> video
@@ -197,25 +197,28 @@ class Funny(commands.Cog):
         await ctx.send(submission.url)
 
     @commands.command(aliases=['ponk', 'bonk'])
-    async def pong(self, ctx, *, name = ""):
+    async def pong(self, ctx, user: discord.Member = ""):
         # await ctx.message.delete()
-        
-        base = Image.open(PATH + "meme_img/bonk.png").convert("RGBA")
-        txt = Image.new("RGBA", base.size, (255, 255, 255, 0))
-        fnt = ImageFont.truetype(PATH + "Montserrat.ttf", 50)
-        
-        if len(name) == 0:
-            tag_name = ctx.message.author.name
-            author_name = "Shiba Bot"
-        elif len(name) == 22:
-            userID = name[3:-1]
-            user_name = await ctx.guild.fetch_member(userID)
-            tag_name = user_name.nick
-            author_name = ctx.message.author.nick
-        else:
-            tag_name = name
-            author_name = ctx.message.author.nick
-            
+        print("done")
+        try:
+            base = Image.open(PATH + "meme_img/bonk.png").convert("RGBA")
+            txt = Image.new("RGBA", base.size, (255, 255, 255, 0))
+            fnt = ImageFont.truetype(PATH + "Montserrat.ttf", 50)
+            name = (type(user) == discord.Member and user.display_name) or ""
+            print(user)
+            if len(name) == 0:
+                tag_name = ctx.message.author.name
+                author_name = "Shiba Bot"
+            elif len(name) == 22:
+                userID = name[3:-1]
+                user_name = await ctx.guild.fetch_member(userID)
+                tag_name = user_name.name
+                author_name = ctx.message.author.name
+            else:
+                tag_name = name
+                author_name = ctx.message.author.name
+        except AssertionError as err:
+            print(err)   
         author = ImageDraw.Draw(txt)
         author.text((30, 500), author_name, font=fnt, fill=(0, 0, 0, 255))
         
@@ -223,30 +226,30 @@ class Funny(commands.Cog):
         tag.text((450, 20), tag_name, font=fnt, fill=(0, 0, 0, 255))
 
         out = Image.alpha_composite(base, txt)
-        out.save('bonk.png')
+        out.save('./dump/bonk.png')
         
-        await ctx.send(file=discord.File('bonk.png'))
-
+        await ctx.send(file=discord.File('./dump/bonk.png'))
+        
     @commands.command(aliases=['luv', 'sendluv'])
-    async def luvu(self, ctx, *, name = ""):
+    async def luvu(self, ctx, *, user: discord.Member = ""):
         # await ctx.message.delete()
         
         base = Image.open(PATH + "meme_img/luv.jpg").convert("RGBA")
         txt = Image.new("RGBA", base.size, (255, 255, 255, 0))
         fnt = ImageFont.truetype(PATH + "Montserrat.ttf", 50)
         fnt2 = ImageFont.truetype(PATH + "Montserrat.ttf", 20)
-        
+        name = (type(user) == discord.Member and user.display_name) or ""
         if len(name) == 0:
             tag_name = ctx.message.author.name
             author_name = "Shiba Bot"
         elif len(name) == 22:
             userID = name[3:-1]
             user_name = await ctx.guild.fetch_member(userID)
-            tag_name = user_name.nick
-            author_name = ctx.message.author.nick
+            tag_name = user_name.name
+            author_name = ctx.message.author.name
         else:
             tag_name = name
-            author_name = ctx.message.author.nick
+            author_name = ctx.message.author.name
         
         author = ImageDraw.Draw(txt)
         author.text((170, 45), author_name, font=fnt, fill=(0, 0, 0, 255), anchor = "mm")
@@ -363,7 +366,7 @@ class Funny(commands.Cog):
         elif len(name) == 22:
             userID = name[3:-1]
             user_name = await ctx.guild.fetch_member(userID)
-            tag_name = user_name.nick
+            tag_name = user_name.name
 
             if tag_name == "None":
                 tag_name = user_name.name
@@ -380,7 +383,7 @@ class Funny(commands.Cog):
         elif len(name) == 22:
             userID = name[3:-1]
             user_name = await ctx.guild.fetch_member(userID)
-            tag_name = user_name.nick
+            tag_name = user_name.name
 
             if tag_name == "None":
                 tag_name = user_name.name
@@ -424,7 +427,7 @@ class Funny(commands.Cog):
         elif len(name) == 22:
             userID = name[3:-1]
             user_name = await ctx.guild.fetch_member(userID)
-            tag_name = user_name.nick
+            tag_name = user_name.name
 
             if tag_name == "None":
                 tag_name = user_name.name
@@ -434,7 +437,7 @@ class Funny(commands.Cog):
         if len(name2) == 22:
             userID = name2[3:-1]
             user_name = await ctx.guild.fetch_member(userID)
-            tag_name2 = user_name.nick
+            tag_name2 = user_name.name
 
             if tag_name2 == "None":
                 tag_name2 = user_name.name
@@ -444,22 +447,23 @@ class Funny(commands.Cog):
         await ctx.send(f"Tại sao lúc vui {name} bao giờ cũng đang bận ?\nLúc bên {name2} bao giờ cũng đang giận ?\nNói chung {name2} chỉ là thuốc an thần\nVới {name} {name2} chỉ là thuốc an thần <:PepeKMS:916687813582393384>")
 
     @commands.command(aliases=['hug', 'sendhug'])
-    async def hugmeuwu(self, ctx, *, name = ""):
+    async def hugmeuwu(self, ctx, user: discord.Member = ""):
         # await ctx.message.delete()
+        name = (type(user) == discord.Member and user.display_name) or ""
         if len(name) == 0:
             tag_name = ctx.message.author.name
             author_name = "Shiba Bot"
         elif len(name) == 22:
             userID = name[3:-1]
             user_name = await ctx.guild.fetch_member(userID)
-            tag_name = user_name.nick
-            author_name = ctx.message.author.nick
+            tag_name = user_name.name
+            author_name = ctx.message.author.name
 
             if author_name == "None":
                 author_name = ctx.message.author.name
         else:
             tag_name = name
-            author_name = ctx.message.author.nick
+            author_name = ctx.message.author.name
 
         # Image editor
         base1 = Image.open(PATH + "meme_img/hug1.png").convert("RGBA")
