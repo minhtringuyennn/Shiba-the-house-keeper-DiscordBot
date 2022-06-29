@@ -401,7 +401,12 @@ class Funny(commands.Cog):
     async def trongtruonghop(self, ctx, *, name = "discord"):
         await ctx.message.delete()
         await ctx.send(f"Trong trường hợp {name} này bị điều tra bởi các cơ quan trực thuộc bộ công an (hoặc các tổ chức chính trị tương tự phục vụ cho nhà nước CHXHCNVN), tôi khẳng định mình không liên quan tới {name} hoặc những cá nhân khác trong {name} này. Tôi không rõ tại sao mình lại có mặt ở đây vào thời điểm này, có lẽ tài khoản của tôi đã được thêm bởi một bên thứ ba. Tôi cũng xin khẳng định rằng mình không hề giúp sức cho những hành động chống phá Đảng và nhà nước của các thành viên trong {name} này. Tôi cũng không quên khẳng định quyết tâm chiến thắng đại dịch Covid-19, nhấn mạnh chủ quyền không thể tranh cãi với quần đảo Hoàng Sa và Trường Sa, cũng như tính chính nghĩa của cuộc chiến giải phóng người dân Campuchia khỏi thảm họa diệt chủng Khmer Đỏ.")
-        
+	
+    @commands.command(aliases=['buon', 'bun'])
+    async def dungbuon(self, ctx):
+        await ctx.message.delete()
+        await ctx.send(f"Chúng ta không nên buồn và không có gì phải buồn thì chúng ta vẫn không buồn, buồn thì cũng buồn một chút xíu thôi chứ không đến nỗi mà buồn hoài buồn hoài, đúng hôn. Mưa nào mà hổng tạnh")
+
     @commands.command(aliases=['thuocanthan', 'anthan'])
     async def thuoc(self, ctx, *, input = ""):
         sz = len(input)

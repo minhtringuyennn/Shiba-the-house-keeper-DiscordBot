@@ -33,7 +33,7 @@ class Vote(commands.Cog):
                 await msg.add_reaction(discord.utils.get(ctx.message.guild.emojis, name=lookup))
             else:
                 for emj in lt.split(' '):
-                    if emj in emoji.UNICODE_EMOJI:
+                    if emoji.is_emoji(emj):
                         await msg.add_reaction(emj)
         #try:
         #    await msg.remove_reaction("<:amongus_VOTED:764909622754017322>",self.bot.user)
