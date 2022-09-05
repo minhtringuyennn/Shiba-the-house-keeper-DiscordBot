@@ -49,19 +49,20 @@ class DefaultCommands(commands.Cog):
     #   await message.edit(content=f"Pong! {round(self.bot.latency * 1000)}ms\nAPI: {round((end_time - start_time) * 1000)}ms")
 
     @commands.command(aliases=['rmmsg', 'delete'])
-    async def remove_msg(self, ctx, *, number = 5):
+    async def remove_msg(self, ctx, *, number = ""):
         this_channel = ctx.message.channel.id
         
         # logs channel, confession channel and request channel
         accepted_channel = [899925135279132683, 789157458647711785, 791112384924090389]
         
         if this_channel in accepted_channel:
-            await ctx.message.delete();
-            if type(number) == type(int):
-                await ctx.channel.purge(limit=number+1)
-            else:
+            await ctx.message.delete()
+            if number == "": number = 5
+            if not isinstance(number, int):
                 await ctx.channel.purge()
-            await ctx.send(f"**{ctx.message.author.nick}** *đã phong ấn {'tất cả' if type(number) == type(int) else number + 1} tin nhắn vào hư vô* ***mãi mãi.***")
+            else:
+                await ctx.channel.purge(limit=number+1)
+            await ctx.send(f"**{ctx.message.author.nick}** *đã phong ấn {'tất cả' if not isinstance(number, int) else number + 1} tin nhắn vào hư vô* ***mãi mãi.***")
         else:
             await ctx.send(f"Êi, đừng lạm dụng phong ấn, sẽ bị tha hoá bởi quyền lực đó bạn ơi <:pepe_deepthink:758735705912115203>")
 
