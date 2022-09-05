@@ -56,10 +56,12 @@ class DefaultCommands(commands.Cog):
         accepted_channel = [899925135279132683, 789157458647711785, 791112384924090389]
         
         if this_channel in accepted_channel:
-            number += 1
             await ctx.message.delete();
-            await ctx.channel.purge(limit=number)
-            await ctx.send(f"**{ctx.message.author.nick}** *đã phong ấn {number - 1} tin nhắn vào hư vô* ***mãi mãi.***")
+            if type(number) == type(int):
+                await ctx.channel.purge(limit=number+1)
+            else:
+                await ctx.channel.purge()
+            await ctx.send(f"**{ctx.message.author.nick}** *đã phong ấn {'tất cả' if type(number) == type(int) else number + 1} tin nhắn vào hư vô* ***mãi mãi.***")
         else:
             await ctx.send(f"Êi, đừng lạm dụng phong ấn, sẽ bị tha hoá bởi quyền lực đó bạn ơi <:pepe_deepthink:758735705912115203>")
 
